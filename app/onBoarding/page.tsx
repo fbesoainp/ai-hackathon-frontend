@@ -10,6 +10,10 @@ import DietTypes from "@/constants/DietTypes";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import PairfectoBackendAPI from "@/integrations/pairfectoBackend";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/integrations/firebase";
+import { User } from "firebase/auth";
+
 
 const CarouselSteps = {
   PartnerName: "PartnerName",
@@ -44,6 +48,20 @@ export default function Preferences() {
   const [parterDietPreferences, setPartnerDietPreferences] = useState(
     dietPreferences
   );
+
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  
+  const pairfectoBackend = new PairfectoBackendAPI();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        router.push("/");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   const steps = useMemo(
     () => [
@@ -107,18 +125,23 @@ export default function Preferences() {
 
   const submitPreferences = async () => {
     try {
-      const api = new PairfectoBackendAPI();
-      await api.createPartner(
+      await pairfectoBackend.updatePreferences(
+        currentUser!,
         partnerName,
         parterCuisinePreferences
           .filter((c) => c.isSelected)
           .map((c) => c.name),
-        [],
         parterDietPreferences
           .filter((d) => d.isSelected)
           .map((d) => d.name),
-        []
+        userCuisinePreferences
+          .filter((c) => c.isSelected)
+          .map((c) => c.name),
+        userDietPreferences
+          .filter((d) => d.isSelected)
+          .map((d) => d.name),
       );
+      router.push("/onBoarding/Finish");
     } catch (err) {
       console.error("Error submitting preferences:", err);
     }

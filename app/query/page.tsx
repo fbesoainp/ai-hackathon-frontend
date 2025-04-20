@@ -7,6 +7,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/integrations/firebase";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
+import PairfectoBackendAPI from "@/integrations/pairfectoBackend";
+import { User } from "firebase/auth";
 
 
 export default function MainView() {
@@ -15,21 +17,32 @@ export default function MainView() {
   const [isLoading, setIsLoading] = useState(false);
   const [userName, setUserName] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  const pairfectoBackend = new PairfectoBackendAPI();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserName(user.displayName || "User");
         setUserPhoto(user.photoURL || "");
+        setCurrentUser(user);
       }
     });
   
     return () => unsubscribe();
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Placeholder action
+    setIsLoading(true);
+    if (currentUser) {
+        await pairfectoBackend.submitQuery(currentUser, query);
+    }
+    setIsLoading(false);
+
     console.log("Query submitted:", query);
+
     router.push("/query/results");
   };
 

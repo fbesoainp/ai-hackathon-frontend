@@ -1,7 +1,6 @@
+import { User } from "firebase/auth";
 export interface AccountInfo {
-  name: string;
-  email: string;
-  picture: string;
+  preferences: any;
 }
 
 export interface PartnerInfo {
@@ -11,60 +10,102 @@ export interface PartnerInfo {
 
 export interface RestaurantInfo {
   name: string;
-  address: string;
-  phone: string;
+  photos: string[];
+  location: string;
   rating: number;
-  user_ratings_total: number;
-  explanation: string;
-  website: string;
-  photo_url: string;
+  total_reviews: number;
+  tags: string[];
+  tag: string;
+  summary: string;
+  description: string;
+  review_summary: string;
 }
 
 export default class PairfectoBackendAPI {
-  private URL: string = "http://localhost:8000";
+  private URL: string = "https://pairfecto.tatanpoker09.com";
 
-  async getAccountInfo(): Promise<AccountInfo> {
+  async getAccountInfo(user: User): Promise<AccountInfo> {
     console.log("Fetching account info");
     // Simulate a network request
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const response = await fetch(`${this.URL}/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "uid": user.uid,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch account info");
+    }
+    const data = await response.json();
+    console.log("Account info response:", data);
     return {
-      name: "John Doe",
-      email: "",
-      picture: "https://example.com/profile.jpg",
+      preferences: data.preferences,
     };
   }
 
-  async getPartner(): Promise<PartnerInfo | null> {
-    // pass
-    return null;
-  }
-
-  async createPartner(
+  async updatePreferences(
+    user: User,
     name: string,
-    preferred_cuisines: string[],
-    disliked_cuisines: string[],
-    diets: string[],
-    allergies: string[]
+    parter_preferred_cuisines: string[],
+    parter_diets: string[],
+    user_preferred_cuisines: string[],
+    user_diets: string[],
   ): Promise<void> {
-    console.log("Creating partner with parameters:", {
+    console.log("Updating parameters:", {
       name,
-      preferred_cuisines,
-      disliked_cuisines,
-      diets,
-      allergies,
+      parter_preferred_cuisines,
+      parter_diets,
+      user_preferred_cuisines,
+      user_diets,
     });
     // Simulate a network request
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return null;
+    const response = await fetch(`${this.URL}/user/prefs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "uid": user.uid,
+      },
+      body: JSON.stringify({
+        name,
+        user: {
+          cuisines: user_preferred_cuisines,
+          diets: user_diets,
+          budget: "",
+          atmosphere: [],
+        },
+        partner: {
+          cuisines: parter_preferred_cuisines,
+          diets: parter_diets,
+          budget: "",
+          atmosphere: [],
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update preferences");
+    }
   }
 
-  async postQuery(query: string): Promise<RestaurantInfo[]> {
-    return null;
+  async submitQuery(user: User, query: string): Promise<RestaurantInfo[]> {
+    console.log("Submitting query:", query);
+    // Simulate a network request
+    const response = await fetch(`${this.URL}/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "uid": user.uid,
+      },
+      body: JSON.stringify({ text: query }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit query");
+    }
+    const data = await response.json();
+    console.log("Query response:", data);
+    return data.restaurants;
     
   }
-
-	async verifyToken(): Promise<boolean> {
-    return null;
-
-	}
 }

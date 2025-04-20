@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { signInWithGoogle } from "@/integrations/auth";
 import { auth } from "@/integrations/firebase";
-import { onAuthStateChanged, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 export default function SignUpForm() {
   const [name, setName] = useState("");
@@ -13,17 +12,6 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.push("/onBoarding");
-      }
-    });
-    return () => unsubscribe();
-  }, [router]);
 
   const handleGoogleSignIn = async () => {
     try {

@@ -20,6 +20,7 @@ export default function RestaurantResults() {
         "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
         ],
         "rating": 4.5,
+        "total_reviews": 120,
         "price": "$$",
         "tag": "Italian",
         "tags": ["American", "Modern", "Live music"],
@@ -27,7 +28,7 @@ export default function RestaurantResults() {
         "summary": "A cozy Italian restaurant known for its homemade pasta and romantic ambiance.",
         "description": "This restaurant matches stacy's taste perfectly! It's a great spot for a romantic dinner.",
         "review_summary": "People love the pasta and the ambiance. It's a great place for a date night.",
-        "hours": ["9:30", "20:00"],
+        "opening_hours": ["9:30", "20:00"],
     },
     {
       name: "Restaurant 2",
@@ -44,7 +45,7 @@ export default function RestaurantResults() {
         "summary": "A modern sushi bar offering a wide variety of fresh sushi and sashimi.",
         "description": "Stacy will love this place! It's a great spot for sushi lovers.",
         "review_summary": "The sushi is fresh and the atmosphere is modern. Perfect for sushi lovers.",
-        "hours": ["9:30", "21:00"],
+        "opening_hours": ["9:30", "21:00"],
     },
     {
       name: "Restaurant 3",
@@ -61,7 +62,7 @@ export default function RestaurantResults() {
         "summary": "A charming bakery known for its delicious cakes and pastries.",
         "description": "Stacy likes desserts, so this place is a must-visit! It's perfect for a sweet treat.",
         "review_summary": "The cakes are delicious and the pastries are to die for. A must-visit for dessert lovers.",
-        "hours": ["9:30", "21:00"],
+        "opening_hours": ["9:30", "21:00"],
 
     },
     {
@@ -71,15 +72,15 @@ export default function RestaurantResults() {
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
             "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
             ],
-            "rating": 4.7,
-            "price": "$$",
-            "tag": "Mexican",
-            "tags": ["Tacos", "Burritos", "Mexican"],
-            "location": "321 Pine St, Cityville",
-            "summary": "A vibrant Mexican restaurant with a lively atmosphere and delicious tacos.",
-            "description": "Stacy loves Mexican food, so this place is a perfect match! It's great for a fun night out.",
-            "review_summary": "The tacos are amazing and the atmosphere is lively. A great spot for a fun night out.",
-            "hours": ["9:30", "21:00"],
+        "rating": 4.7,
+        "price": "$$",
+        "tag": "Mexican",
+        "tags": ["Tacos", "Burritos", "Mexican"],
+        "location": "321 Pine St, Cityville",
+        "summary": "A vibrant Mexican restaurant with a lively atmosphere and delicious tacos.",
+        "description": "Stacy loves Mexican food, so this place is a perfect match! It's great for a fun night out.",
+        "review_summary": "The tacos are amazing and the atmosphere is lively. A great spot for a fun night out.",
+        "opening_hours": ["9:30", "21:00"],
     }
   ]
 
@@ -142,7 +143,7 @@ export default function RestaurantResults() {
                         {(() => {
                             const now = new Date();
                             const currentMinutes = now.getHours() * 60 + now.getMinutes();
-                            const [closeHourStr, closeMinStr] = restaurant.hours?.[1]?.split(":") || [];
+                            const [closeHourStr, closeMinStr] = restaurant.opening_hours?.[1]?.split(":") || [];
                             const closingMinutes = parseInt(closeHourStr) * 60 + parseInt(closeMinStr);
                             const isOpen = currentMinutes < closingMinutes;
 
@@ -152,7 +153,7 @@ export default function RestaurantResults() {
                                     {isOpen ? "Open" : "Closed"}
                                     </p>
                                     <p className="text-sm">
-                                    ・{isOpen ? "Closes at " + restaurant.hours?.[1] : "Opens at " + restaurant.hours?.[0]}
+                                    ・{isOpen ? "Closes at " + restaurant.opening_hours?.[1] : "Opens at " + restaurant.opening_hours?.[0]}
                                     </p>
                                 </div>
                             );
