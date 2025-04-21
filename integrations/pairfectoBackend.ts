@@ -100,12 +100,14 @@ export default class PairfectoBackendAPI {
       body: JSON.stringify({ text: query }),
     });
 
+    console.log(user.uid);
+
     if (!response.ok) {
       throw new Error("Failed to submit query");
     }
     const data = await response.json();
     console.log("Query response:", data);
-    return data.restaurants;
+    return data.results;
     
   }
 }

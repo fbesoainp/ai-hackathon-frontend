@@ -34,16 +34,21 @@ export default function MainView() {
   }, []);
 
   const handleSubmit = async () => {
-    // Placeholder action
     setIsLoading(true);
+    let results = [];
+  
     if (currentUser) {
-        await pairfectoBackend.submitQuery(currentUser, query);
+      results = await pairfectoBackend.submitQuery(currentUser, query);
     }
+  
+    // stash them in sessionStorage
+    sessionStorage.setItem("pairfectoResults", JSON.stringify(results));
+  
     setIsLoading(false);
-
     console.log("Query submitted:", query);
-
-    router.push("/query/results");
+  
+    // only pass the query itself
+    router.push(`/query/results?query=${encodeURIComponent(query)}`);
   };
 
   return (

@@ -17,7 +17,7 @@ export default function SignUpForm() {
     try {
       setIsLoading(true);
       await signInWithGoogle();
-    } catch (err: any) {
+    } catch {
       setError("Failed to sign in with Google");
     } finally {
       setIsLoading(false);
@@ -35,7 +35,7 @@ export default function SignUpForm() {
       if (name) {
         await updateProfile(user, { displayName: name });
       }
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message || "Failed to register");
     } finally {
       setIsLoading(false);

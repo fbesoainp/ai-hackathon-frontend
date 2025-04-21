@@ -1,92 +1,102 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import ArrowLeft from "@/assets/icons/arrow-left.svg";
 
 export default function RestaurantResults() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const initialQuery = searchParams.get("query") || "";
-  const initialResults = [
-    {
-      name: "Restaurant 1",
-      photos: [
-        "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
-        "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w",
-        "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
-        ],
-        "rating": 4.5,
-        "total_reviews": 120,
-        "price": "$$",
-        "tag": "Italian",
-        "tags": ["American", "Modern", "Live music"],
-        "location": "123 Main St, Cityville",
-        "summary": "A cozy Italian restaurant known for its homemade pasta and romantic ambiance.",
-        "description": "This restaurant matches stacy's taste perfectly! It's a great spot for a romantic dinner.",
-        "review_summary": "People love the pasta and the ambiance. It's a great place for a date night.",
-        "opening_hours": ["9:30", "20:00"],
-    },
-    {
-      name: "Restaurant 2",
-      photos: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
-        "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
-        "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
-        ],
-        "rating": 4.8,
-        "price": "$$$",
-        "tag": "Japanese",
-        "tags": ["Sushi", "Sashimi", "Japanese"],
-        "location": "456 Elm St, Cityville",
-        "summary": "A modern sushi bar offering a wide variety of fresh sushi and sashimi.",
-        "description": "Stacy will love this place! It's a great spot for sushi lovers.",
-        "review_summary": "The sushi is fresh and the atmosphere is modern. Perfect for sushi lovers.",
-        "opening_hours": ["9:30", "21:00"],
-    },
-    {
-      name: "Restaurant 3",
-      photos: [
-          "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w",
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
-          "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
-        ],
-        "rating": 4.2,
-        "price": "$",
-        "tag": "Dessert",
-        "tags": ["Desserts", "Cakes", "Pastries"],
-        "location": "789 Oak St, Cityville",
-        "summary": "A charming bakery known for its delicious cakes and pastries.",
-        "description": "Stacy likes desserts, so this place is a must-visit! It's perfect for a sweet treat.",
-        "review_summary": "The cakes are delicious and the pastries are to die for. A must-visit for dessert lovers.",
-        "opening_hours": ["9:30", "21:00"],
+//   const initialResults = [
+//     {
+//       name: "Restaurant 1",
+//       photos: [
+//         "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
+//         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
+//         "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w",
+//         "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
+//         ],
+//         "rating": 4.5,
+//         "total_reviews": 120,
+//         "price": "$$",
+//         "tag": "Italian",
+//         "tags": ["American", "Modern", "Live music"],
+//         "location": "123 Main St, Cityville",
+//         "summary": "A cozy Italian restaurant known for its homemade pasta and romantic ambiance.",
+//         "description": "This restaurant matches stacy's taste perfectly! It's a great spot for a romantic dinner.",
+//         "review_summary": "People love the pasta and the ambiance. It's a great place for a date night.",
+//         "opening_hours": ["9:30", "20:00"],
+//     },
+//     {
+//       name: "Restaurant 2",
+//       photos: [
+//         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
+//         "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
+//         "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
+//         ],
+//         "rating": 4.8,
+//         "price": "$$$",
+//         "tag": "Japanese",
+//         "tags": ["Sushi", "Sashimi", "Japanese"],
+//         "location": "456 Elm St, Cityville",
+//         "summary": "A modern sushi bar offering a wide variety of fresh sushi and sashimi.",
+//         "description": "Stacy will love this place! It's a great spot for sushi lovers.",
+//         "review_summary": "The sushi is fresh and the atmosphere is modern. Perfect for sushi lovers.",
+//         "opening_hours": ["9:30", "21:00"],
+//     },
+//     {
+//       name: "Restaurant 3",
+//       photos: [
+//           "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w",
+//           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
+//           "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
+//         ],
+//         "rating": 4.2,
+//         "price": "$",
+//         "tag": "Dessert",
+//         "tags": ["Desserts", "Cakes", "Pastries"],
+//         "location": "789 Oak St, Cityville",
+//         "summary": "A charming bakery known for its delicious cakes and pastries.",
+//         "description": "Stacy likes desserts, so this place is a must-visit! It's perfect for a sweet treat.",
+//         "review_summary": "The cakes are delicious and the pastries are to die for. A must-visit for dessert lovers.",
+//         "opening_hours": ["9:30", "21:00"],
 
-    },
-    {
-        name: "Restaurant 4",
-        photos: [
-            "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
-            "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
-            ],
-        "rating": 4.7,
-        "price": "$$",
-        "tag": "Mexican",
-        "tags": ["Tacos", "Burritos", "Mexican"],
-        "location": "321 Pine St, Cityville",
-        "summary": "A vibrant Mexican restaurant with a lively atmosphere and delicious tacos.",
-        "description": "Stacy loves Mexican food, so this place is a perfect match! It's great for a fun night out.",
-        "review_summary": "The tacos are amazing and the atmosphere is lively. A great spot for a fun night out.",
-        "opening_hours": ["9:30", "21:00"],
-    }
-  ]
+//     },
+//     {
+//         name: "Restaurant 4",
+//         photos: [
+//             "https://resizer.otstatic.com/v2/photos/xlarge/2/72607942.webp",
+//             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj6GvKhRfoMZY25z3FK2j_mA5Vj-_hzo-3pg&s",
+//             "https://images.squarespace-cdn.com/content/v1/553fce79e4b003bef702d42a/1430433772679-5PTAVEAMPI3NPBDY9PN9/hero_wLogo.jpg?format=2500w"
+//             ],
+//         "rating": 4.7,
+//         "price": "$$",
+//         "tag": "Mexican",
+//         "tags": ["Tacos", "Burritos", "Mexican"],
+//         "location": "321 Pine St, Cityville",
+//         "summary": "A vibrant Mexican restaurant with a lively atmosphere and delicious tacos.",
+//         "description": "Stacy loves Mexican food, so this place is a perfect match! It's great for a fun night out.",
+//         "review_summary": "The tacos are amazing and the atmosphere is lively. A great spot for a fun night out.",
+//         "opening_hours": ["9:30", "21:00"],
+//     }
+//   ]
 
-  const [query, setQuery] = useState(initialQuery);
-  const [restaurants, setRestaurants] = useState(initialResults);
+  const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const [initialResults, setInitialResults] = useState([]);
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem("pairfectoResults");
+    if (raw) {
+      try {
+        setInitialResults(JSON.parse(raw));
+        console.log("Cached results:", JSON.parse(raw));
+      } catch {
+        console.warn("Could not parse cached results");
+      }
+    }
+  }, []);
 
   const handleQuerySubmit = () => {
     // Placeholder: should trigger API call in logic version
@@ -121,13 +131,13 @@ export default function RestaurantResults() {
             <div className="flex flex-col items-center w-full max-w-[400px] max-h-[700px] overflow-y-auto">
                 {!isLoading ? (
                 <div className="flex flex-col gap-5">
-                    {restaurants.map((restaurant, index: number) => (
+                    {initialResults.map((restaurant, index: number) => (
                     <div
                         key={index}
                         className="max-w-[350px] bg-white/95 text-black p-4 rounded-[0.625rem]"
                     >
                         <div className="flex items-center flex-row gap-4 mb-2 overflow-x-auto">
-                            {restaurant.photos.map((photo, index) => (
+                            {restaurant.photo_url.map((photo, index) => (
                             <Image
                                 key={index}
                                 src={photo}
@@ -168,7 +178,7 @@ export default function RestaurantResults() {
                             />
                             <p className="text-sm text-gray-600">{restaurant.summary || "Summary not available"}</p>
                         </div>
-                        <div className="flex flex-row gap-2 justify-start items-center pt-2">
+                        {/* <div className="flex flex-row gap-2 justify-start items-center pt-2">
                             {restaurant.tags.map((tag, index) => (
                             <div
                                 key={index}
@@ -177,7 +187,7 @@ export default function RestaurantResults() {
                                 {tag}
                             </div>
                             ))}
-                        </div>                        
+                        </div>                         */}
                     </div>
                     ))}
                 </div>
